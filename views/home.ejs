@@ -4,9 +4,34 @@
     <title>websocket测试</title>
     <meta charset="UTF-8">
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+    <script src="/javascripts/jquery-1.11.1.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
+<style>
+    @media screen and (min-width: 800px) { .container{width: 1366px;}}
+</style>
+
+<script>
+    $(document).ready(function(){
+        var socket = io.connect('http://127.0.0.1:3000');
+        socket.on('news', function (data) {
+            //console.log(data);
+            var now1=new Date();
+            //console.log(now+'Server Recv:'+JSON.stringify(data));
+            $("#id_1").text(JSON.stringify(now1+' Client Recv：EVENT=news|BODY='+JSON.stringify(data) ))
+            socket.emit('my other event', { 'my': 'data' });
+            var now2=new Date();
+            $("#id_2").text(JSON.stringify(now2+' Client Send：EVENT=my other event|BODY='+JSON.stringify({ 'my': 'data' })))                                  //11
+
+        });
+        //$("#id_1").text("3333333333")
+    });
+</script>
 <body>
 <h1>websocket测试</h1>
 <p>websocket测试</p>
+<%-include display.ejs %>
 </body>
 </html>

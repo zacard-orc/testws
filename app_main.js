@@ -21,7 +21,7 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -69,3 +69,14 @@ var server = app.listen(app.get('port'), function() {
 });
 
 var io=require('socket.io')(server);
+
+io.on('connection',function(socket){
+    console.log(socket)
+   socket.emit('news',{'hello':'world'});
+    var now=new Date();
+    console.log(now+'Server Send:EVENT=nes|BODY='+JSON.stringify({'hello':'client'}));
+    socket.on('my other event',function(data){
+       var now=new Date();
+       console.log(now+'Server Recv:EVENT=my other event|BODY='+JSON.stringify(data));
+   })
+});
